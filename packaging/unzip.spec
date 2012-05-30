@@ -6,6 +6,7 @@ Release: 9
 License: BSD
 Group: Applications/Archiving
 Source: ftp://ftp.info-zip.org/pub/infozip/src/unzip60.tar.gz
+Source1001: packaging/unzip.manifest 
 # Not sent to upstream.
 Patch1: unzip-6.0-bzip2-configure.patch
 # Upstream plans to do this in zip (hopefully also in unzip).
@@ -42,6 +43,7 @@ a zip archive.
 ln -s unix/Makefile Makefile
 
 %build
+cp %{SOURCE1001} .
 make CFLAGS="-D_LARGEFILE64_SOURCE" linux_noasm LF2="" %{?_smp_mflags}
 
 %install
@@ -53,6 +55,7 @@ make prefix=$RPM_BUILD_ROOT%{_prefix} MANDIR=$RPM_BUILD_ROOT/%{_mandir}/man1 INS
 rm -rf $RPM_BUILD_ROOT
 
 %files
+%manifest unzip.manifest
 %defattr(-,root,root)
 %doc README BUGS LICENSE 
 %{_bindir}/*
