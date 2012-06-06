@@ -5,7 +5,7 @@ Version: 6.0
 Release: 9
 License: BSD
 Group: Applications/Archiving
-Source: ftp://ftp.info-zip.org/pub/infozip/src/unzip60.tar.gz
+Source0: %{name}-%{version}.tar.gz
 Source1001: packaging/unzip.manifest 
 # Not sent to upstream.
 Patch1: unzip-6.0-bzip2-configure.patch
@@ -34,7 +34,7 @@ Install the unzip package if you need to list, test or extract files from
 a zip archive.
 
 %prep
-%setup -q -n %{name}60
+%setup -q
 %patch1 -p1 -b .bzip2-configure
 %patch2 -p1 -b .exec-shield
 %patch3 -p1 -b .close
