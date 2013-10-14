@@ -50,6 +50,8 @@ make CFLAGS="-D_LARGEFILE64_SOURCE" linux_noasm LF2="" %{?_smp_mflags}
 rm -rf $RPM_BUILD_ROOT
 
 make prefix=$RPM_BUILD_ROOT%{_prefix} MANDIR=$RPM_BUILD_ROOT/%{_mandir}/man1 INSTALL="cp -p" install LF2="" 
+mkdir -p %{buildroot}/usr/share/license
+cp LICENSE %{buildroot}/usr/share/license/%{name}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -60,4 +62,4 @@ rm -rf $RPM_BUILD_ROOT
 %doc README BUGS LICENSE 
 %{_bindir}/*
 %doc %{_mandir}/*/*
-
+/usr/share/license/%{name}
