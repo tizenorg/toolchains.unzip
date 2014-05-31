@@ -1,0 +1,11 @@
+--- unzip60-orig/unix/Makefile	2012-10-15 17:09:19.233392092 +0900
++++ unzip60/unix/Makefile	2012-10-15 17:37:26.721456601 +0900
+@@ -819,7 +819,7 @@
+ # Linux (Posix, approximately SysV):  virtually any version since before 0.96,
+ # for any platform.  Change "-O" to "-O3" or whatever, as desired...
+ linux_noasm:	unix_make
+-	$(MAKE) unzips CC=gcc LD=gcc CFLAGS="-O -Wall"
++	$(MAKE) unzips CC=gcc LD=gcc CFLAGS="-g -O -Wall"
+ 
+ # Linux with lcc compiler:  __inline__ (stat.h) not recognized, and must edit
+ # /usr/include/gnu/types.h to get rid of "long long" if __LCC__ defined.  -O3
