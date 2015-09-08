@@ -2,8 +2,8 @@
 Summary: A utility for unpacking zip files
 Name: unzip
 Version: 6.0
-Release: 9
-License: BSD
+Release: 11
+License: BSD-2.0
 Group: Applications/Archiving
 Source0: %{name}-%{version}.tar.gz
 Source1001: packaging/unzip.manifest 
@@ -19,6 +19,7 @@ Patch4: unzip-6.0-attribs-overflow.patch
 # Not sent to upstream, as it's Fedora/RHEL specific.
 # Modify the configure script not to request the strip of binaries.
 Patch5: unzip-6.0-nostrip.patch
+Patch1002: unzip-6.0-make-debug.patch
 URL: http://www.info-zip.org/pub/infozip/UnZip.html
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -40,16 +41,27 @@ a zip archive.
 %patch3 -p1 -b .close
 %patch4 -p1 -b .attribs-overflow
 %patch5 -p1 -b .nostrip
+%patch1002 -p1 -b .make-debug
 ln -s unix/Makefile Makefile
 
 %build
 cp %{SOURCE1001} .
-make CFLAGS="-D_LARGEFILE64_SOURCE" linux_noasm LF2="" %{?_smp_mflags}
+make CFLAGS="-D_LARGEFILE64_SOURCE" linux_noasm LF2="" %{?_smp_mflags} LOCAL_UNZIP=-DIZ_HAVE_UXUIDGID
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
-make prefix=$RPM_BUILD_ROOT%{_prefix} MANDIR=$RPM_BUILD_ROOT/%{_mandir}/man1 INSTALL="cp -p" install LF2="" 
+make prefix=$RPM_BUILD_ROOT%{_prefix} MANDIR=$RPM_BUILD_ROOT/%{_mandir}/man1 INSTALL="cp -p" install LF2=""
+
+mkdir -p $RPM_BUILD_ROOT%{_datadir}/license
+for keyword in LICENSE COPYING COPYRIGHT;
+do
+	for file in `find %{_builddir} -name $keyword`;
+	do
+		cat $file >> $RPM_BUILD_ROOT%{_datadir}/license/%{name};
+		echo "";
+	done;
+done
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -57,7 +69,8 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %manifest unzip.manifest
 %defattr(-,root,root)
-%doc README BUGS LICENSE 
+%doc README BUGS LICENSE
+%{_datadir}/license/%{name}
 %{_bindir}/*
 %doc %{_mandir}/*/*
 
