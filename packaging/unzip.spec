@@ -2,7 +2,7 @@
 Summary: A utility for unpacking zip files
 Name: unzip
 Version: 6.0
-Release: 11
+Release: 10
 License: BSD-2.0
 Group: Applications/Archiving
 Source0: %{name}-%{version}.tar.gz
